@@ -37,6 +37,7 @@ public class LogonServlet extends HttpServlet {
 
         String URL = "/StoreSelection.jsp";
         String sql = "";
+        String authString = "";
         String msg = "";
         int userid = 0;
         int passattempt;
@@ -58,19 +59,23 @@ public class LogonServlet extends HttpServlet {
 
             ConnectionPool pool = ConnectionPool.getInstance();
             Connection conn = pool.getConnection();
+            
 
             Statement s = conn.createStatement();
             sql = "SELECT * FROM stores ORDER BY StoreName ";
+            
+            authString = "SELECT * FROM users WHERE userID = '" + userid + "'";
             //query = "SELECT userName FROM users WHERE userID = 1234";         
 
-            ResultSet r = s.executeQuery(sql);
+        //    ResultSet r = s.executeQuery(sql);
+        ResultSet r = s.executeQuery(authString);
             //System.out.println("User = " + r.getString("userName"));  
 
             if (r.next()) {
 
                 user = new User();
                 user.setUserid(userid);
-                user.setPassword(r.getInt("Password"));
+                user.setPassword(r.getInt("userPassword"));
                 user.setPwdattempt(passattempt);
                 if (user.isAuthenticated()) {
 

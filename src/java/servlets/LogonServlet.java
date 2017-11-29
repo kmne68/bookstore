@@ -74,10 +74,9 @@ public class LogonServlet extends HttpServlet {
                 user.setUsername(r.getString("userName"));
                 user.setStoreid(r.getInt("storeID"));
                 user.setAdminlevel(r.getString("adminLevel"));
-                
 
                 if (user.isAuthenticated()) {
-                    
+
                     ResultSet rs = s.executeQuery(sql);
 
                     while (rs.next()) {
@@ -94,6 +93,9 @@ public class LogonServlet extends HttpServlet {
                     } else {
                         msg = "No stores read from Stores table.<br>";
                     }
+                    r.close();
+                    pool.freeConnection(conn);
+                    conn.close();
 
                     URL = "/StoreSelection.jsp";
                     msg = "User authenticated.";

@@ -4,6 +4,10 @@
         <servlet-name>LogonServlet</servlet-name>
         <servlet-class>servlets.LogonServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewInventoryServlet</servlet-name>
+        <servlet-class>servlets.ViewInventoryServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogonServlet</servlet-name>
         <url-pattern>/Logon</url-pattern>
@@ -11,6 +15,10 @@
     <welcome-file-list>
         <welcome-file>Logon.jsp</welcome-file>
     </welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>ViewInventoryServlet</servlet-name>
+        <url-pattern>/ViewInventory</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

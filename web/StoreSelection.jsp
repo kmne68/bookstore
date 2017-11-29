@@ -8,6 +8,23 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
+    <script src="ajax.js" type="text/javascript"></script>
+    <script src="inventory.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript">
+        function ajaxfunction()
+        {
+           // document.selection.actiontype.value = action;
+            if(ajax) {
+                // Prof. Daniel used sid where I use storeID
+                var storeID = document.getElementById("storeid").value;
+                ajax.open('get', 'ViewInventory?storeid=' + encodeURIComponent(storeID));
+                ajax.send(null);
+                
+            } else {
+                document.selection.submit();
+            }
+        }
+    </script>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Store Selection</title>
@@ -18,7 +35,7 @@
         <p>
             User: ${user.userid} - ${user.username}, ${user.adminlevel} Level
         </p>
-        <form action="" id="selection" method="post">
+        <form action="ViewInventory" id="selection" method="post">
             Stores:<br>
             <select id="storeid" name="storeid">
                 <c:forEach var="st" items="${stores}">
@@ -28,8 +45,10 @@
                     </option>
                 </c:forEach>
             </select>
-            <input type="submit" value="View/Edit Inventory">
+            <input type="submit" value="Select" onclick="ajaxfunction()"> <!-- send store selection in background -->
         </form>
+        <br>
+        <div id="results"></div>
         
         ${msg}
     </body>

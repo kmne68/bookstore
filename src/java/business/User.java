@@ -10,7 +10,7 @@ package business;
  * @author kmne6
  */
 public class User {
-    
+
     private int userid, storeid, password, pwdattempt;
     private String username, adminlevel;
 
@@ -70,11 +70,14 @@ public class User {
     public void setAdminlevel(String adminlevel) {
         this.adminlevel = adminlevel;
     }
-    
-    
+
     public boolean isAuthenticated() {
+
+        if (this.password <= 0) {
+            return false;
+        }
+        return (this.password == this.pwdattempt);
         
-        return true;
     }
-    
+
 }

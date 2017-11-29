@@ -56,20 +56,14 @@ public class LogonServlet extends HttpServlet {
         try {
             userid = Integer.parseInt(request.getParameter("userid").trim());
             passattempt = Integer.parseInt(request.getParameter("password"));
-
             ConnectionPool pool = ConnectionPool.getInstance();
             Connection conn = pool.getConnection();
-            
 
             Statement s = conn.createStatement();
             sql = "SELECT * FROM stores ORDER BY StoreName ";
-            
-            authString = "SELECT * FROM users WHERE userID = '" + userid + "'";
-            //query = "SELECT userName FROM users WHERE userID = 1234";         
+            authString = "SELECT * FROM users WHERE userID = '" + userid + "';";
 
-        //    ResultSet r = s.executeQuery(sql);
-        ResultSet r = s.executeQuery(authString);
-            //System.out.println("User = " + r.getString("userName"));  
+            ResultSet r = s.executeQuery(authString);
 
             if (r.next()) {
 
@@ -77,38 +71,43 @@ public class LogonServlet extends HttpServlet {
                 user.setUserid(userid);
                 user.setPassword(r.getInt("userPassword"));
                 user.setPwdattempt(passattempt);
-                if (user.isAuthenticated()) {
+                user.setUsername(r.getString("userName"));
+                user.setStoreid(r.getInt("storeID"));
+                user.setAdminlevel(r.getString("adminLevel"));
+                
 
-                    while (r.next()) {
+                if (user.isAuthenticated()) {
+                    
+                    ResultSet rs = s.executeQuery(sql);
+
+                    while (rs.next()) {
                         Store st = new Store();
-                        st.setStoreid(r.getInt("StoreID"));
-                        st.setStorename(r.getString("StoreName"));
-                        st.setStoreaddr(r.getString("StoreAddr"));
-                        st.setStoreemp(r.getInt("StoreEmp"));
+                        st.setStoreid(rs.getInt("StoreID"));
+                        st.setStorename(rs.getString("StoreName"));
+                        st.setStoreaddr(rs.getString("StoreAddr"));
+                        st.setStoreemp(rs.getInt("StoreEmp"));
                         stores.add(st);
                     }
-
-
 
                     if (stores.size() > 0) {
                         request.getSession().setAttribute("stores", stores);
                     } else {
                         msg = "No stores read from Stores table.<br>";
                     }
-                    
+
                     URL = "/StoreSelection.jsp";
-                    msg = "User authenticated.";          
+                    msg = "User authenticated.";
 
                 } else {
                     msg = "Unable to authenticate.";
                 }
-                
-                    request.getSession().setAttribute("user", user);
-                    
-                    Cookie uid = new Cookie("userid", Integer.toString(userid));
-                    uid.setMaxAge(60 * 10);
-                    uid.setPath("/"); // make cookie available to every page on root
-                    response.addCookie(uid);
+
+                request.getSession().setAttribute("user", user);
+
+                Cookie uid = new Cookie("userid", Integer.toString(userid));
+                uid.setMaxAge(60 * 10);
+                uid.setPath("/"); // make cookie available to every page on root
+                response.addCookie(uid);
             }
         } catch (SQLException e) {
             msg = "SQL exception " + e + "<br>";
@@ -116,26 +115,26 @@ public class LogonServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             msg = "Illegal password<br>";
 
-    }
-        
+        }
+
         request.setAttribute("msg", msg);
 
-    RequestDispatcher disp = getServletContext().getRequestDispatcher(URL);
+        RequestDispatcher disp = getServletContext().getRequestDispatcher(URL);
 
-    disp.forward (request, response);
-}
+        disp.forward(request, response);
+    }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-/**
- * Handles the HTTP <code>GET</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -149,7 +148,7 @@ public class LogonServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -160,7 +159,7 @@ public class LogonServlet extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-        public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

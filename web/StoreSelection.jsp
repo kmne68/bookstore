@@ -28,6 +28,7 @@
                     </option>
                 </c:forEach>
             </select>
+            <input type="submit" value="View/Edit Inventory">
         </form>
         
         ${msg}

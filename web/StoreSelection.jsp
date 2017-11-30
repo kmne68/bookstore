@@ -45,7 +45,7 @@
                     </option>
                 </c:forEach>
             </select>
-            <input type="submit" value="Select" onclick="ajaxfunction()"> <!-- send store selection in background -->
+            <input type="button" value="Select" onclick="ajaxfunction()"> <!-- send store selection in background -->
         </form>
         <br>
         <div id="results"></div>

@@ -21,7 +21,7 @@
                 <tr>
                     <td>User ID:</td>
                     <td><input type="text" name="userid" id="userid"
-                               value="">
+                               value="${empty user.userid ? cookie.userid.value : user.userid}">
                     </td>
                 </tr>
                 
@@ -36,6 +36,18 @@
             
         </form>
         ${msg}
+        <br>
+                <!-- Display cookies on the bottom of the page -->
+        <%
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie c : cookies) {
+        %>
+        <%= c.getName()%> = <%= c.getValue()%><br>
+        <%
+                }
+            }
+        %>
         
     </body>
 </html>

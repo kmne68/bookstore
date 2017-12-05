@@ -12,7 +12,14 @@
         <title>Henry Books</title>
     </head>
     <body>
-        <h1></h1>
+        <h1>User: ${user.userid} - ${user.username}, ${user.adminlevel} Level</h1>
+        <br>
+        <p>Branch #: <em>$(user.storeid}</em></p>
+        <p>Branch Name: <em>$(st.storename</em></p>
+        <p>Branch Location: <em>${st.storeaddr}</em></p>
+        <br>
+        <p>Book Cd: <input></p>
+        
         Message from servlet is: ${msg}
     </body>
 </html>

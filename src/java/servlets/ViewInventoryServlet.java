@@ -6,6 +6,7 @@
 package servlets;
 
 import business.ConnectionPool;
+import business.Inventory;
 import business.User;
 import business.Store;
 
@@ -14,6 +15,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,6 +40,7 @@ public class ViewInventoryServlet extends HttpServlet {
         String msg = "";
         User user;
         Store store;
+        Inventory inv;
         
         try {
             storeid = Integer.parseInt(request.getParameter("storeid"));    // "storeid" is from the StoreSelection jsp
@@ -51,27 +54,39 @@ public class ViewInventoryServlet extends HttpServlet {
             
             // obtain store from stores table and build store object
             store = new Store();
-        //    store.setStoreid(storeid);
+            Statement s = conn.createStatement();
+            sql = "SELECT storeID, storeName, storeAddr, storeEmp FROM stores where storeID = 2"; // + storeid + "' ";
+
+            ResultSet r = s.executeQuery(sql);
+                        
+            while(r.next()) {
+                store.setStoreid(storeid);
+                store.setStoreemp(r.getInt("storeEmp"));
+                store.setStorename(r.getString("storeName"));
+                store.setStoreaddr(r.getString("storeAddr"));
+            }
+            msg += "store address " + store.getStoreaddr();
+
+            request.setAttribute("store", store);            
             
             // create inventory bean and arraylist of that object type filled by reading inventory table (sql command in spec) by reading book inventory
             // put items on the session so they're passed on
+            
+            // need: Store, Book Cd, Title, Retail Price, Quantity
+            // TABLE bookinv has: bookID, storeID, OnHand
+            // TABLE booklist has: bookID, title, author, publisher_Code, booktype, price
+            
+            inv = new Inventory();
+    //        sql = "SELECT i.storeID, i.bookID, i.OnHand, l.title, l.price, "
+            
 
 
-/*
-            Statement s = conn.createStatement();
-            sql = "SELECT storeName, storeAddr FROM stores where storeID = " + storeid + "' ";
 
-            ResultSet r = s.executeQuery(sql);
-            store.setStorename(r.getString("storeName"));
-            store.setStoreaddr(r.getString("storeAddr"));
-
-            System.out.println("Store name = " + r.getString("storeName"));
-*/        //    request.getSession().setAttribute("store", store);
             
         } catch (Exception e) {
             msg = "Bad store number.<br>";
         }
-
+        
         request.setAttribute("msg", msg);
         
         RequestDispatcher disp = getServletContext().getRequestDispatcher(URL);

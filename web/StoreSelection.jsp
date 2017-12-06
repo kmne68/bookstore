@@ -29,6 +29,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Store Selection</title>
     </head>
+    
+        <!-- send them back if they aren't authenticated -->
+    <c:if test="${!m.authenticated}">
+        <script type="text/javascript">
+            window.location = "/WebHenryBooks";
+        </script>
+    </c:if>
+    
     <body>
         <h1>Select Store for Inventory:</h1>
         

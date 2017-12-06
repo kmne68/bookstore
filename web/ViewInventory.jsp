@@ -4,6 +4,8 @@
     Author     : kmne6
 --%>
 
+<%@page import="business.Store"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,11 +16,11 @@
     <body>
         <h1>User: ${user.userid} - ${user.username}, ${user.adminlevel} Level</h1>
         <br>
-        <p>Branch #: <em>$(user.storeid}</em></p>
-        <p>Branch Name: <em>$(st.storename</em></p>
-        <p>Branch Location: <em>${st.storeaddr}</em></p>
+        <p>Branch #: <em>${user.storeid}</em></p>
+        <p>Branch Name: <em>${store.storename}</em></p>
+        <p>Branch Location: <em>${store.storeaddr}</em></p>
         <br>
-        <p>Book Cd: <input></p>
+        <p>Book Cd: <input=></p>
         
         Message from servlet is: ${msg}
     </body>

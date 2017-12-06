@@ -5,8 +5,15 @@
  */
 package servlets;
 
+import business.ConnectionPool;
+import business.User;
+import business.Store;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,19 +36,42 @@ public class ViewInventoryServlet extends HttpServlet {
         int storeid = 0;
         String sql = "";
         String msg = "";
+        User user;
+        Store store;
         
         try {
             storeid = Integer.parseInt(request.getParameter("storeid"));    // "storeid" is from the StoreSelection jsp
             msg = "Store " + storeid + " requests.";
             
-            // next: new connection from pool
+
+            
+            // next: new connection from pool 
+            ConnectionPool pool = ConnectionPool.getInstance();
+            Connection conn = pool.getConnection();
+            
             // obtain store from stores table and build store object
+            store = new Store();
+        //    store.setStoreid(storeid);
+            
             // create inventory bean and arraylist of that object type filled by reading inventory table (sql command in spec) by reading book inventory
             // put items on the session so they're passed on
+
+
+/*
+            Statement s = conn.createStatement();
+            sql = "SELECT storeName, storeAddr FROM stores where storeID = " + storeid + "' ";
+
+            ResultSet r = s.executeQuery(sql);
+            store.setStorename(r.getString("storeName"));
+            store.setStoreaddr(r.getString("storeAddr"));
+
+            System.out.println("Store name = " + r.getString("storeName"));
+*/        //    request.getSession().setAttribute("store", store);
+            
         } catch (Exception e) {
             msg = "Bad store number.<br>";
         }
-        
+
         request.setAttribute("msg", msg);
         
         RequestDispatcher disp = getServletContext().getRequestDispatcher(URL);

@@ -1,3 +1,5 @@
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -76,12 +78,32 @@ public class ViewInventoryServlet extends HttpServlet {
             // TABLE bookinv has: bookID, storeID, OnHand
             // TABLE booklist has: bookID, title, author, publisher_Code, booktype, price
             
-            inv = new Inventory();
-    //        sql = "SELECT i.storeID, i.bookID, i.OnHand, l.title, l.price, "
             
+            sql = "SELECT i.storeID, i.bookID, i.OnHand, l.title, l.price FROM "
+                    + "bookinv i, booklist l  WHERE i.bookID = l.bookID AND"
+                    + " storeID = '" + storeid + "'";
+            
+            ResultSet inventorySet = s.executeQuery(sql);
+            ArrayList<Inventory> inventory = new ArrayList<>();
+            
+            while(inventorySet.next()) {
+                inv = new Inventory(
+                        r.getInt("storeID"),
+                        r.getString("bookID"),
+                        r.getString("title"),
+                        r.getDouble("price"),
+                        r.getInt("OnHand")                     
+                ); 
+                inventory.add(inv);
+            }
+            
+            r.last();
+            msg = "Books in inventory: " + r.getRow() + ".<br>";
 
-
-
+            request.setAttribute("inventory", inventory);
+            r.close();
+            pool.freeConnection(conn);
+            conn.close();
             
         } catch (Exception e) {
             msg = "Bad store number.<br>";

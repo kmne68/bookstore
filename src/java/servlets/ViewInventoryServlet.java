@@ -1,5 +1,3 @@
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -42,26 +40,25 @@ public class ViewInventoryServlet extends HttpServlet {
         String msg = "";
         User user;
         Store store;
-        Inventory inv;
-        
+        // Inventory inv;
+        String invsql = "";
+
         try {
             storeid = Integer.parseInt(request.getParameter("storeid"));    // "storeid" is from the StoreSelection jsp
             msg = "Store " + storeid + " requests.";
-            
 
-            
             // next: new connection from pool 
             ConnectionPool pool = ConnectionPool.getInstance();
             Connection conn = pool.getConnection();
-            
+
             // obtain store from stores table and build store object
             store = new Store();
             Statement s = conn.createStatement();
             sql = "SELECT storeID, storeName, storeAddr, storeEmp FROM stores where storeID = 2"; // + storeid + "' ";
 
             ResultSet r = s.executeQuery(sql);
-                        
-            while(r.next()) {
+
+            while (r.next()) {
                 store.setStoreid(storeid);
                 store.setStoreemp(r.getInt("storeEmp"));
                 store.setStorename(r.getString("storeName"));
@@ -69,52 +66,56 @@ public class ViewInventoryServlet extends HttpServlet {
             }
             msg += "store address " + store.getStoreaddr();
 
-            request.setAttribute("store", store);            
-            
-            // create inventory bean and arraylist of that object type filled by reading inventory table (sql command in spec) by reading book inventory
-            // put items on the session so they're passed on
-            
-            // need: Store, Book Cd, Title, Retail Price, Quantity
-            // TABLE bookinv has: bookID, storeID, OnHand
-            // TABLE booklist has: bookID, title, author, publisher_Code, booktype, price
-            
-            
-            sql = "SELECT i.storeID, i.bookID, i.OnHand, l.title, l.price FROM "
-                    + "bookinv i, booklist l  WHERE i.bookID = l.bookID AND"
-                    + " storeID = '" + storeid + "'";
-            
-            ResultSet inventorySet = s.executeQuery(sql);
-            ArrayList<Inventory> inventory = new ArrayList<>();
-            
-            while(inventorySet.next()) {
-                inv = new Inventory(
-                        r.getInt("storeID"),
-                        r.getString("bookID"),
-                        r.getString("title"),
-                        r.getDouble("price"),
-                        r.getInt("OnHand")                     
-                ); 
-                inventory.add(inv);
-            }
-            
-            r.last();
-            msg = "Books in inventory: " + r.getRow() + ".<br>";
+            request.setAttribute("store", store);
 
-            request.setAttribute("inventory", inventory);
             r.close();
             pool.freeConnection(conn);
             conn.close();
-            
+
+            // create inventory bean and arraylist of that object type filled by reading inventory table (sql command in spec) by reading book inventory
+            // put items on the session so they're passed on
+            // need: Store, Book Cd, Title, Retail Price, Quantity
+            // TABLE bookinv has: bookID, storeID, OnHand
+            // TABLE booklist has: bookID, title, author, publisher_Code, booktype, price
+            ConnectionPool ipool = ConnectionPool.getInstance();
+            Connection iconn = ipool.getConnection();
+            Statement is = iconn.createStatement();
+            invsql = "SELECT i.storeID, i.bookID, i.OnHand, l.title, l.price FROM bookinv i, booklist l  WHERE i.bookID = l.bookID AND storeID = 2";
+
+            /*        "SELECT i.storeID, i.bookID, i.OnHand, l.title, l.price FROM "
+                    + "bookinv i, booklist l  WHERE i.bookID = l.bookID AND"
+                    + " storeID = " + storeid; */
+            ResultSet inventorySet = is.executeQuery(invsql);
+            ArrayList<Inventory> inventory = new ArrayList<>();
+
+            while (inventorySet.next()) {
+                Inventory inv = new Inventory(
+                        inventorySet.getInt("storeID"),
+                        inventorySet.getString("bookID"),
+                        inventorySet.getInt("OnHand"),
+                        inventorySet.getString("title"),
+                        inventorySet.getDouble("price")
+                );
+                inventory.add(inv);
+            }
+
+            inventorySet.last();
+            msg = "Books in inventory: " + inventorySet.getRow() + ".<br>";
+
+            request.setAttribute("inventory", inventory);
+            inventorySet.close();
+            ipool.freeConnection(iconn);
+            iconn.close();
+
         } catch (Exception e) {
             msg = "Bad store number.<br>";
         }
-        
+
         request.setAttribute("msg", msg);
-        
+
         RequestDispatcher disp = getServletContext().getRequestDispatcher(URL);
         disp.forward(request, response);
-        
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

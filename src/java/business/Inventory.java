@@ -14,24 +14,24 @@ public class Inventory {
     // Store, Book Cd, Title, Retail Price, Quantity
     private int storeid;
     private String bookcd;
+    private int quantity;
     private String title;
     private double price;
-    private int quantity;
     
     public Inventory() {
         storeid = 0;
         bookcd = "";
+        quantity = 0;
         title = "";
         price = 0;
-        quantity = 0;
     }
     
-    public Inventory(int storeID, String bookcd, String title, double price, int quantity  ) {
+    public Inventory(int storeID, String bookcd, int quantity, String title, double price  ) {
         this.storeid = storeID;
         this.bookcd = bookcd;
+        this.quantity = quantity;
         this.title = title;
-        this.price = price;
-        this.quantity = quantity;       
+        this.price = price;       
     }
 
     public int getStoreid() {

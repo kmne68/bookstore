@@ -80,7 +80,7 @@ public class ViewInventoryServlet extends HttpServlet {
             ConnectionPool ipool = ConnectionPool.getInstance();
             Connection iconn = ipool.getConnection();
             Statement is = iconn.createStatement();
-            invsql = "SELECT i.storeID, i.bookID, i.OnHand, l.title, l.price FROM bookinv i, booklist l  WHERE i.bookID = l.bookID AND storeID = 2";
+            invsql = "SELECT i.storeID, i.bookID, i.OnHand, l.title, l.price FROM bookinv i, booklist l  WHERE i.bookID = l.bookID AND storeID = " + storeid;
 
             /*        "SELECT i.storeID, i.bookID, i.OnHand, l.title, l.price FROM "
                     + "bookinv i, booklist l  WHERE i.bookID = l.bookID AND"

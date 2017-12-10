@@ -5,7 +5,9 @@
 --%>
 
 <%@page import="business.Store"%>
+<%@page import="business.Inventory"%>
 <%@page import="java.util.ArrayList"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -21,7 +23,27 @@
         <p>Branch Location: <em>${store.storeaddr}</em></p>
         <br>
         <p>Book Cd: <input=></p>
-        
+
         Message from servlet is: ${msg}
-    </body>
-</html>
+
+        <table border="1">
+            <tr>
+                <th>Store</th>
+                <th>Book Cd</th>
+                <th>Quantity</th>
+                <th>Title</th>
+                <th>Retail Price</th>
+            </tr>
+            <c:forEach var="inv" items="${inventory}">
+                <tr>
+                    <td align="left">${inv.storeid}</td>
+                    <td align="left">${inv.bookcd}</td>
+                    <td align="left">${inv.quantity}</td>
+                    <td align="left">${inv.title}</td>
+                    <td align="left">${inv.price}</td>
+                </tr>
+            </c:forEach>
+            </table>
+        <br>
+        </body>
+    </html>

@@ -31,11 +31,12 @@
     </head>
     
         <!-- send them back if they aren't authenticated -->
-    <!--c:if test="${!m.authenticated}">
+    <c:if test="${!user.authenticated}">
         <script type="text/javascript">
             window.location = "/WebHenryBooks";
         </script>
-    <!--/c:if-->
+    </c:if>
+    <c:if test="${user.authenticated}">
     
     <body>
         <h1>Select Store for Inventory:</h1>
@@ -56,8 +57,11 @@
             <input type="button" value="Select" onclick="ajaxfunction()"> <!-- send store selection in background -->
         </form>
         <br>
+
+        
         <div id="results"></div>
         
         ${msg}
     </body>
+    </c:if>
 </html>

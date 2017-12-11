@@ -8,6 +8,10 @@
         <servlet-name>ViewInventoryServlet</servlet-name>
         <servlet-class>servlets.ViewInventoryServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InventoryUpdateServlet</servlet-name>
+        <servlet-class>servlets.InventoryUpdateServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogonServlet</servlet-name>
         <url-pattern>/Logon</url-pattern>
@@ -18,6 +22,10 @@
     <servlet-mapping>
         <servlet-name>ViewInventoryServlet</servlet-name>
         <url-pattern>/ViewInventory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InventoryUpdateServlet</servlet-name>
+        <url-pattern>/InventoryUpdate</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

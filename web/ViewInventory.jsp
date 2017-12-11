@@ -22,7 +22,13 @@
         <p>Branch Name: <em>${store.storename}</em></p>
         <p>Branch Location: <em>${store.storeaddr}</em></p>
         <br>
-        <p>Book Cd: <input=></p>
+
+        <c:if test="${user.adminlevel == 'Admn'}">       
+            <input type="button" name="edit" id="edit" value="Edit" ><!--onclick="pageAction('edit')"-->
+        </c:if>
+
+            <br>
+        <!--input type="button" name="edit" id="edit" value="Edit" onclick="pageAction('edit')"-->
 
         Message from servlet is: ${msg}
 
@@ -43,7 +49,7 @@
                     <td align="left">${inv.price}</td>
                 </tr>
             </c:forEach>
-            </table>
+        </table>
         <br>
-        </body>
-    </html>
+    </body>
+</html>

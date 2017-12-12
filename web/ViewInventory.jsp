@@ -24,7 +24,7 @@
         <br>
 
         <c:if test="${user.adminlevel == 'Admn'}">       
-            <input type="button" name="edit" id="edit" value="Edit" ><!--onclick="pageAction('edit')"-->
+            <input type="button" name="edit" id="edit" value="Edit" onclick="pageAction('edit')" ><!--onclick="pageAction('edit')"-->
         </c:if>
 
             <br>
@@ -51,5 +51,6 @@
             </c:forEach>
         </table>
         <br>
+        
     </body>
 </html>

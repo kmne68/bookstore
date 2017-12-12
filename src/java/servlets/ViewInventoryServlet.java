@@ -44,6 +44,11 @@ public class ViewInventoryServlet extends HttpServlet {
         String invsql = "";
 
         try {
+            // Not sure we need this:
+            String path = getServletContext().getRealPath("/WEB-INF/") + "\\";
+
+            String action = request.getParameter("actiontype");
+
             storeid = Integer.parseInt(request.getParameter("storeid"));    // "storeid" is from the StoreSelection jsp
             msg = "Store " + storeid + " requests.";
 
@@ -101,6 +106,18 @@ public class ViewInventoryServlet extends HttpServlet {
 
             inventorySet.last();
             msg = "Books in inventory: " + inventorySet.getRow() + ".<br>";
+
+            // not sure this is an appropriate place for this:
+            if (action.equalsIgnoreCase("edit")) {
+                URL = "/UpdateInventory.jsp";
+                
+                try {
+                    // setAttribute
+                } catch (Exception e) {
+                    
+                }
+                
+            }
 
             request.setAttribute("inventory", inventory);
             inventorySet.close();

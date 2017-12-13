@@ -10,7 +10,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+    "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -27,13 +27,13 @@
         <c:if test="${user.adminlevel == 'Admn'}">
             <!-- is this the correct way/place to associate the input with this servlet? -->
             <form action="InventoryUpdate" name="inventory" id="inventory" method="post">
-                <input type="button" id="edit" name="edit" value="Edit" onclick="pageAction('edit')" ><!--onclick="pageAction('edit')"-->
+                <input type="text" name="updateqty" id="updateqty" size="15">
+                <input type="submit" id="edit" name="edit" value="Edit" onclick="pageAction('edit')" ><!--onclick="pageAction('edit')"-->
             </form>
         </c:if>
         <br>
         <!--input type="button" name="edit" id="edit" value="Edit" onclick="pageAction('edit')"-->
 
-        Message from servlet is: ${msg}
 
         <table border="1">
             <tr>
@@ -54,6 +54,7 @@
             </c:forEach>
         </table>
         <br>
+        Message from servlet is: ${msg}
 
     </body>
 </html>

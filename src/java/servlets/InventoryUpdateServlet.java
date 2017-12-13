@@ -7,10 +7,12 @@ package servlets;
 
 import business.ConnectionPool;
 import business.Inventory;
+import business.Store;
 import business.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,36 +34,51 @@ public class InventoryUpdateServlet extends HttpServlet {
         String sql = "";
         String msg = "test from inventoryupdateservlet";
         String URL = "/UpdateInventory.jsp";
+        String bookcd = "";
+        int bookqty = 0;
         int idata = 0; // inventory data
-        User u;
-        Inventory inventory;
+        User user;
+        Store store;
+        ArrayList inventory;
         
         System.out.println("TEST");
 
         try {
-
+            String path = getServletContext().getRealPath("/WEB-INF/") + "\\";
+            
+            store = (Store) request.getAttribute("store");
+     //       inventory = (ArrayList) request.getAttribute("inventory");
+            bookcd = request.getParameter("bookcd");
+            msg += "Book code = " + bookcd;
+            
             String action = request.getParameter("actiontype");
 
-            msg = "Store " + 2 + " requests.";
             ConnectionPool pool = ConnectionPool.getInstance();
             Connection conn = pool.getConnection();
 
-            // not sure this is an appropriate place for this:
-            if (action.equalsIgnoreCase("edit")) {
-                URL = "/UpdateInventory.jsp";
+//             not sure this is an appropriate place for this:
+//            if (action.equalsIgnoreCase("edit")) {
+//                URL = "UpdateInventory.jsp";
+//                msg += "TEST TEST TEST";
+//                try {
+//                    // setAttribute
+//
+//                request.setAttribute("msg", msg);
+//                } catch (Exception e) {
+//
+//                }
+//            }
 
-                try {
-                    // setAttribute
-
-                request.setAttribute("msg", msg);
-                } catch (Exception e) {
-
-                }
-
-            }
-
+            // Update quantity 
+//            if(action.equalsIgnoreCase("updateqty")) {
+//                bookqty = Integer.parseInt(request.getParameter("updateqty"));
+//                inventory.setQuantity(bookqty);
+//                // SQL update statement
+//                
+//            }
+            
         } catch (Exception e) {
-            msg = "Bad store number.<br>";
+            msg = "An exception occurred in the InventoryUpdateServlet.<br>";
         }
 
         try {

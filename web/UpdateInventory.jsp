@@ -15,7 +15,7 @@
         <title>Update Inventory</title>
     </head>
     <body>
-        <h1>User: ${u.userid}} - ${user.username}, ${user.adminlevel} Level</h1>
+        <h1>User: ${user.userid} - ${user.username}, ${user.adminlevel} Level</h1>
         <br>
         <p>Branch #: <em>${user.storeid}</em></p>
         <p>Branch Name: <em>${store.storename}</em></p>
@@ -26,17 +26,43 @@
         <p>Book Tide: ${inv.booktitle}</p>
         <p>Author: ${inv.author}</p>
 
-        <p>Inventory on hand in branch: 
-        <input type="text" name="updateqty" id="updateqty" size="15">
+        <h2>Inventory on hand in branch: </h2>
+        <form action="InventoryUpdate" name="inventory" id="inventory" method="post">
+        <input type="text" name="bookcd" id="bookcd" size="15">
         <input type="button" name="update" id="update" value="Update Inventory" onclick="pageAction('update')">
-        </p>
+        
+        
         <!-- get attribute -->
         <input type="button" name="cancel" value="Cancel" onclick="pageAction('cancel')">
+        </form>
+        
+        <br>
+        <!-- experimental code -->
+                <table border="1">
+            <tr>
+                <th>Store</th>
+                <th>Book Cd</th>
+                <th>Quantity</th>
+                <th>Title</th>
+                <th>Retail Price</th>
+            </tr>
+            <c:forEach var="inv" items="${inventory}">
+                <tr>
+                    <td align="left">${inv.storeid}</td>
+                    <td align="left">${inv.bookcd}</td>
+                    <td align="left">${inv.quantity}</td>
+                    <td align="left">${inv.title}</td>
+                    <td align="left">${inv.price}</td>
+                </tr>
+            </c:forEach>
+        </table>
+        <!-- End experimental code -->
+        
         
         <br>
         <p>${msg}</p>
         <br>
-        <a href=MemberScreen.jsp">Back to Member Screen</a>
+        <a href="ViewInventory.jsp">Back to Inventory</a>
 
     </body>
 </html>

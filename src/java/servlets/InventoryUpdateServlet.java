@@ -21,22 +21,40 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kmne6
  */
-@WebServlet(name = "InbentoryUpdateServlet", urlPatterns = {"/InventoryUpdate"})
+@WebServlet(name = "InventoryUpdateServlet", urlPatterns = {"/InventoryUpdate"})
 public class InventoryUpdateServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String sql = "", msg = "", URL = "/ViewInventory";
+        String sql = "";
+        String msg = "";
+        String URL = "/UpdateInventory.jsp";
         int idata = 0; // inventory data
         User u;
-        Inventory i;
+        Inventory inventory;
         
         try {
+            
+            String action = request.getParameter("actiontype");
+            
             msg = "Store " + 2 + " requests.";
             ConnectionPool pool = ConnectionPool.getInstance();
             Connection conn = pool.getConnection();
+            
+                        // not sure this is an appropriate place for this:
+            if (action.equalsIgnoreCase("edit")) {
+                URL = "/UpdateInventory.jsp";
+                
+                try {
+                    // setAttribute
+                } catch (Exception e) {
+                    
+                }
+                
+            }
+
         }
         catch (Exception e) {
             msg = "Bad store number.<br>";

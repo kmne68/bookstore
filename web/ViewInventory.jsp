@@ -23,11 +23,14 @@
         <p>Branch Location: <em>${store.storeaddr}</em></p>
         <br>
 
-        <c:if test="${user.adminlevel == 'Admn'}">       
-            <input type="button" name="edit" id="edit" value="Edit" onclick="pageAction('edit')" ><!--onclick="pageAction('edit')"-->
+        <c:if test="${user.adminlevel == 'Admn'}">
+            <!-- is this the correct way/place to associate the input with this servlet? -->
+            <form action="InventoryUpdate" name="inventory" id="inventory" method="post">
+                <input type="button" name="edit" id="edit" value="Edit" onclick="pageAction('edit')" ><!--onclick="pageAction('edit')"-->
+            </form>
         </c:if>
 
-            <br>
+        <br>
         <!--input type="button" name="edit" id="edit" value="Edit" onclick="pageAction('edit')"-->
 
         Message from servlet is: ${msg}
@@ -51,6 +54,6 @@
             </c:forEach>
         </table>
         <br>
-        
+
     </body>
 </html>

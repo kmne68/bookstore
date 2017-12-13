@@ -107,17 +107,6 @@ public class ViewInventoryServlet extends HttpServlet {
             inventorySet.last();
             msg = "Books in inventory: " + inventorySet.getRow() + ".<br>";
 
-            // not sure this is an appropriate place for this:
-            if (action.equalsIgnoreCase("edit")) {
-                URL = "/UpdateInventory.jsp";
-                
-                try {
-                    // setAttribute
-                } catch (Exception e) {
-                    
-                }
-                
-            }
 
             request.setAttribute("inventory", inventory);
             inventorySet.close();

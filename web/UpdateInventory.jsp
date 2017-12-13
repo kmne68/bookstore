@@ -31,12 +31,12 @@
         <input type="button" name="update" id="update" value="Update Inventory" onclick="pageAction('update')">
         </p>
         <!-- get attribute -->
-        <input type="button" name="cancel" value="Cancel" onclick="pageAction('')">
+        <input type="button" name="cancel" value="Cancel" onclick="pageAction('cancel')">
         
         <br>
         <p>${msg}</p>
         <br>
-        <a href=""MemberScreen.jsp">Back to Member Screen</a>
+        <a href=MemberScreen.jsp">Back to Member Screen</a>
 
     </body>
 </html>

@@ -11,6 +11,7 @@ import business.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,44 +30,51 @@ public class InventoryUpdateServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String sql = "";
-        String msg = "";
+        String msg = "test from inventoryupdateservlet";
         String URL = "/UpdateInventory.jsp";
         int idata = 0; // inventory data
         User u;
         Inventory inventory;
         
+        System.out.println("TEST");
+
         try {
-            
+
             String action = request.getParameter("actiontype");
-            
+
             msg = "Store " + 2 + " requests.";
             ConnectionPool pool = ConnectionPool.getInstance();
             Connection conn = pool.getConnection();
-            
-                        // not sure this is an appropriate place for this:
+
+            // not sure this is an appropriate place for this:
             if (action.equalsIgnoreCase("edit")) {
                 URL = "/UpdateInventory.jsp";
-                
+
                 try {
                     // setAttribute
+
+                request.setAttribute("msg", msg);
                 } catch (Exception e) {
-                    
+
                 }
-                
+
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             msg = "Bad store number.<br>";
         }
-        
+
         try {
             idata = Integer.parseInt(request.getParameter("onhand"));
         } catch (Exception e) {
-            
+
         }
-        
-        
+
+        request.getSession().setAttribute("msg", msg);
+
+        RequestDispatcher disp = getServletContext().getRequestDispatcher(URL);
+        disp.forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

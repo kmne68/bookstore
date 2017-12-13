@@ -43,11 +43,11 @@ public class ViewInventoryServlet extends HttpServlet {
         // Inventory inv;
         String invsql = "";
 
+            String action = request.getParameter("actiontype");
         try {
             // Not sure we need this:
             String path = getServletContext().getRealPath("/WEB-INF/") + "\\";
 
-            String action = request.getParameter("actiontype");
 
             storeid = Integer.parseInt(request.getParameter("storeid"));    // "storeid" is from the StoreSelection jsp
             msg = "Store " + storeid + " requests.";
@@ -116,6 +116,7 @@ public class ViewInventoryServlet extends HttpServlet {
         } catch (Exception e) {
             msg = "Bad store number.<br>";
         }
+        
 
         request.setAttribute("msg", msg);
 

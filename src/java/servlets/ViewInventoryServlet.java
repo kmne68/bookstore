@@ -22,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -38,19 +39,23 @@ public class ViewInventoryServlet extends HttpServlet {
         int storeid = 0;
         String sql = "";
         String msg = "";
-        User user;
+        //    User user;
         Store store;
         // Inventory inv;
         String invsql = "";
+        String bookcode = "";
 
-            String action = request.getParameter("actiontype");
+        String action = request.getParameter("actiontype");
         try {
             // Not sure we need this:
             String path = getServletContext().getRealPath("/WEB-INF/") + "\\";
 
-
             storeid = Integer.parseInt(request.getParameter("storeid"));    // "storeid" is from the StoreSelection jsp
             msg = "Store " + storeid + " requests.";
+
+            // set the bookcode whose inventory is to be updated
+            bookcode = request.getParameter("updateqty");
+            request.setAttribute("bookcode", bookcode);
 
             // next: new connection from pool 
             ConnectionPool pool = ConnectionPool.getInstance();
@@ -107,7 +112,6 @@ public class ViewInventoryServlet extends HttpServlet {
             inventorySet.last();
             msg = "Books in inventory: " + inventorySet.getRow() + ".<br>";
 
-
             request.setAttribute("inventory", inventory);
             inventorySet.close();
             ipool.freeConnection(iconn);
@@ -116,7 +120,17 @@ public class ViewInventoryServlet extends HttpServlet {
         } catch (Exception e) {
             msg = "Bad store number.<br>";
         }
+
         
+        // set the bookcode whose inventory is to be updated
+        try {
+            if (action.equalsIgnoreCase("edit")) {
+                bookcode = request.getParameter("updateqty");
+                request.setAttribute("bookcode", bookcode);
+            }
+        } catch (Exception e) {
+            msg += "Unable to set bookcode due to " + e;
+        }
 
         request.setAttribute("msg", msg);
 

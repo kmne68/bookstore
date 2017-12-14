@@ -4,8 +4,9 @@
     Author     : kmne6
 --%>
 
-<%@page import="business.Store"%>
-<%@page import="business.Inventory"%>
+<!--%@page import="business.Store"%-->
+<!--%@page import="business.Inventory"%-->
+
 <%@page import="java.util.ArrayList"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -33,8 +34,7 @@
         </c:if>
         <br>
         <!--input type="button" name="edit" id="edit" value="Edit" onclick="pageAction('edit')"-->
-
-
+       
         <table border="1">
             <tr>
                 <th>Store</th>

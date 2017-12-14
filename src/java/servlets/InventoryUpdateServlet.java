@@ -40,6 +40,8 @@ public class InventoryUpdateServlet extends HttpServlet {
         User user;
         Store store;
         ArrayList inventory;
+        String storename = "";
+        String bookcode = "";
         
         System.out.println("TEST");
 
@@ -47,8 +49,13 @@ public class InventoryUpdateServlet extends HttpServlet {
             String path = getServletContext().getRealPath("/WEB-INF/") + "\\";
             
             store = (Store) request.getAttribute("store");
+          //  request.setAttribute("store", store);
+          //  storename = store.getStorename();
+          //  request.setAttribute("storename", storename);
      //       inventory = (ArrayList) request.getAttribute("inventory");
-            bookcd = request.getParameter("bookcd");
+
+            
+    //        bookcd = request.getParameter("bookcd");
             msg += "Book code = " + bookcd;
             
             String action = request.getParameter("actiontype");

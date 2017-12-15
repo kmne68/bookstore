@@ -39,43 +39,65 @@ public class InventoryUpdateServlet extends HttpServlet {
         int idata = 0; // inventory data
         User user;
         Store store;
-        ArrayList inventory;
+        // Inventory inv;
+        ArrayList inv;
         String storename = "";
         String bookcode = "";
-        
-        System.out.println("TEST");
+        String teststring = "";
+        String storeaddress = "";
+        Inventory newinv;
+        String storeid = "";
 
+//        Store newStore = new Store();
         try {
             String path = getServletContext().getRealPath("/WEB-INF/") + "\\";
-            
-            store = (Store) request.getAttribute("store");
-          //  request.setAttribute("store", store);
-          //  storename = store.getStorename();
-          //  request.setAttribute("storename", storename);
-     //       inventory = (ArrayList) request.getAttribute("inventory");
 
-            
-    //        bookcd = request.getParameter("bookcd");
+            store = (Store) request.getSession().getAttribute("store");
+
+            inv = (ArrayList) request.getSession().getAttribute("inventory");
+            //           newStore.setStoreaddr(store.getStoreaddr());
+
+//            try {
+//                idata = Integer.parseInt(request.getParameter("bookqty"));
+//
+//                }
+//            }
+            sql = "SELECT bookinv.storeID, bookinv.bookID, title, price, OnHand "
+                    + "FROM bookinv, booklist "
+                    + "WHERE bookinv.bookID = booklist.bookID and bookinv.storeID = "
+                    + storeid 
+                    + "ORDER BY bookID;";
+                    
+//  request.setAttribute("store", store);
+                    //  storename = store.getStorename();
+                    //  request.setAttribute("storename", storename);
+                    //          try{
+                    //            inv = (ArrayList) request.getAttribute("inventory");
+                    //            msg += "inventory array list worked <br>";
+                    //          } catch (Exception e) {
+                    //              msg += "inventory failed to load " + e + "<br>";
+                    //          }      
+                    //        inventory.setBookcd();
+                    //        teststring =  (String) inv.get(2);
+            msg += "teststring = " + teststring;
+
+            //        bookcd = request.getParameter("bookcd");
             msg += "Book code = " + bookcd;
-            
+
             String action = request.getParameter("actiontype");
 
             ConnectionPool pool = ConnectionPool.getInstance();
             Connection conn = pool.getConnection();
 
-//             not sure this is an appropriate place for this:
+            // set the bookcode whose inventory is to be updated
+//        try {
 //            if (action.equalsIgnoreCase("edit")) {
-//                URL = "UpdateInventory.jsp";
-//                msg += "TEST TEST TEST";
-//                try {
-//                    // setAttribute
-//
-//                request.setAttribute("msg", msg);
-//                } catch (Exception e) {
-//
-//                }
+//                bookcode = request.getParameter("updateqty");
+//                request.setAttribute("bookcode", bookcode);
 //            }
-
+//        } catch (Exception e) {
+//            msg += "Unable to set bookcode due to " + e;
+//        }
             // Update quantity 
 //            if(action.equalsIgnoreCase("updateqty")) {
 //                bookqty = Integer.parseInt(request.getParameter("updateqty"));
@@ -83,7 +105,6 @@ public class InventoryUpdateServlet extends HttpServlet {
 //                // SQL update statement
 //                
 //            }
-            
         } catch (Exception e) {
             msg = "An exception occurred in the InventoryUpdateServlet.<br>";
         }

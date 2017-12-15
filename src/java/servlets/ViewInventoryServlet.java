@@ -122,15 +122,7 @@ public class ViewInventoryServlet extends HttpServlet {
         }
 
         
-        // set the bookcode whose inventory is to be updated
-        try {
-            if (action.equalsIgnoreCase("edit")) {
-                bookcode = request.getParameter("updateqty");
-                request.setAttribute("bookcode", bookcode);
-            }
-        } catch (Exception e) {
-            msg += "Unable to set bookcode due to " + e;
-        }
+
 
         request.setAttribute("msg", msg);
 

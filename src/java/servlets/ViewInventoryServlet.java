@@ -121,8 +121,15 @@ public class ViewInventoryServlet extends HttpServlet {
             msg = "Bad store number.<br>";
         }
 
-        
-
+        // set the bookcode whose inventory is to be updated, put it on the session
+        try {
+            if (action.equalsIgnoreCase("edit")) {
+                bookcode = request.getParameter("bookcd");
+                request.setAttribute("bookcode", bookcode);
+            }
+        } catch (Exception e) {
+            msg += "Unable to set bookcode due to " + e;
+        }
 
         request.setAttribute("msg", msg);
 

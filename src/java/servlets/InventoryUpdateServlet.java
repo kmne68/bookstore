@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,16 +41,14 @@ public class InventoryUpdateServlet extends HttpServlet {
         int idata = 0; // inventory data
         ArrayList newinv;
         Inventory inventory;
-
         String bookcd = "";
+        int onhand = 0;
+
         int bookqty = 0;
         User user;
         Store store;
-        // Inventory inv;
-        String storename = "";
         String bookcode = "";
         String teststring = "";
-        String storeaddress = "";
         String storeid = "";
 
 //        Store newStore = new Store();
@@ -60,74 +60,83 @@ public class InventoryUpdateServlet extends HttpServlet {
             // A new inventory object to hold current details
             inventory = new Inventory();
 
-            store = (Store) request.getSession().getAttribute("store");
-            newinv = new ArrayList();
+            // store = (Store) request.getSession().getAttribute("store");
+            // newinv = new ArrayList();
             // get the inventory object that is on the session
-            inv = (ArrayList) request.getSession().getAttribute("inventory");
-
+            // inv = (ArrayList) request.getSession().getAttribute("inventory");
             // fill the new inventory array list with existing inventory values
-            newinv = inv;
-
+            // newinv = inv;
             String action = request.getParameter("actiontype");
 
-            // set the bookcode (received from the ViewInventory JSP 
-            // whose inventory is to be updated
+            bookcode = (String) request.getSession().getAttribute("bookcode");
+
+            // Obtain the new quantity 
             try {
-                if (action.equalsIgnoreCase("edit")) {
-                    bookcode = request.getParameter("bookcd");
-                    request.setAttribute("bookcode", bookcode);
+                if (action.equalsIgnoreCase("updateqty")) {
+                    bookqty = Integer.parseInt(request.getParameter("updateqty"));
+                    inventory.setQuantity(bookqty);
+                    // SQL update statement                
                 }
             } catch (Exception e) {
-                msg += "Unable to set bookcode due to " + e;
+                msg += "Unable to obtain new quantity.<br>";
             }
 
-            //           newStore.setStoreaddr(store.getStoreaddr());
-//            try {
-//                idata = Integer.parseInt(request.getParameter("bookqty"));
-//
-//                }
-//            }
-
+            // implement cancel button
+            try {
+                if (action.equalsIgnoreCase("cancel")) {
+                    URL = "/ViewInventory.jsp";
+                }
+            } catch (Exception e) {
+                msg += "Unable to return to inventory screen, error is: " + e + "<br>";
+            }
+            
             // get inventory on hand for the book with the target book code at store 
             // with the target store ID.
             if (msg.isEmpty()) {
-                
+
                 Connection conn = pool.getConnection();
-                
+                Statement s = conn.createStatement();
+
                 sql = "SELECT OnHand "
                         + "FROM bookinv "
                         + "WHERE bookinv.bookID = " + bookcode + " and bookinv.storeID = "
-                        + storeid;                
-                
-                PreparedStatement ps = conn.prepareStatement(sql);
-                
+                        + storeid;
+
+                ResultSet rs = s.executeQuery(sql);
+
+                // store current inventory in case the update fails
+                onhand = ((Integer) rs.getObject(1)).intValue();
+                inventory.setQuantity(onhand);
             }
 
             // upadate the inventory with the new book quantity
-            if (msg.isEmpty()) {
-                Connection conn = pool.getConnection();
+            try {
+                if (msg.isEmpty()) {
+                    Connection conn = pool.getConnection();
 
-                sql = "UPDATE bookinv SET onhand = ?"
-                        + "WHERE storeID = ? "
-                        + " AND bookID = ? ";
-                
-                PreparedStatement ps = conn.prepareStatement(sql);
+                    sql = "UPDATE bookinv SET onhand = ?"
+                            + "WHERE storeID = ? "
+                            + " AND bookID = ? ";
 
-                ps.setInt(1, inventory.getQuantity());
-                ps.setInt(2, inventory.getStoreid());
-                ps.setString(3, inventory.getBookcd());
-                
-                int rc = ps.executeUpdate();
-                if(rc == 0) {
-                    msg = "Update failed, no records were changed<br>";
-                } else if (rc == 1) {
-                    msg += "Inventory has been updated";
-                    request.getSession().setAttribute("inventory", inventory);
-                } else {
-                    msg += "Unexpected update of " + rc + "records.<br>";
+                    PreparedStatement ps = conn.prepareStatement(sql);
+
+                    ps.setInt(1, inventory.getQuantity());
+                    ps.setInt(2, inventory.getStoreid());
+                    ps.setString(3, inventory.getBookcd());
+
+                    int rc = ps.executeUpdate();
+                    if (rc == 0) {
+                        msg = "Update failed, no records were changed<br>";
+                    } else if (rc == 1) {
+                        msg += "Inventory has been updated";
+                        request.getSession().setAttribute("inventory", inventory);
+                    } else {
+                        msg += "Unexpected update of " + rc + "records.<br>";
+                    }
+
                 }
-                
-
+            } catch (Exception e) {
+                msg += "Update failed; " + e;
             }
 
             //  request.setAttribute("store", store);
@@ -146,13 +155,6 @@ public class InventoryUpdateServlet extends HttpServlet {
             //        bookcd = request.getParameter("bookcd");
             msg += "Book code = " + bookcd;
 
-            // Update quantity 
-//            if(action.equalsIgnoreCase("updateqty")) {
-//                bookqty = Integer.parseInt(request.getParameter("updateqty"));
-//                inventory.setQuantity(bookqty);
-//                // SQL update statement
-//                
-//            }
         } catch (Exception e) {
             msg = "An exception occurred in the InventoryUpdateServlet.<br>";
         }

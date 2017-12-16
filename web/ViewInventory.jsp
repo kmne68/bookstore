@@ -28,7 +28,7 @@
         <c:if test="${user.adminlevel == 'Admn'}">
             <!-- is this the correct way/place to associate the input with this servlet? -->
             <form action="InventoryUpdate" name="inventory" id="inventory" method="post">
-                <input type="text" name="updateqty" id="updateqty" size="15">
+                <input type="text" name="bookcd" id="bookcd" size="15">
                 <input type="submit" id="edit" name="edit" value="Edit" onclick="pageAction('edit')" ><!--onclick="pageAction('edit')"-->
             </form>
         </c:if>

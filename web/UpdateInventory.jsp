@@ -34,12 +34,12 @@
 
         <h2>Inventory on hand in branch: </h2>
         <form action="InventoryUpdate" name="inventory" id="inventory" method="post">
-        <input type="text" name="bookcd" id="bookcd" size="15">
+        <input type="text" name="updateqty" id="updateqty" size="15">
         <input type="button" name="update" id="update" value="Update Inventory" onclick="pageAction('update')">
         
         
         <!-- get attribute -->
-        <input type="button" name="cancel" value="Cancel" onclick="pageAction('cancel')">
+        <input type="button" name="cancel" value="Cancel" onclick="document.forms[0].action = 'ViewInventory.jsp'; return true;"><!-- onclick="pageAction('cancel')"-->
         </form>
         
         <br>
